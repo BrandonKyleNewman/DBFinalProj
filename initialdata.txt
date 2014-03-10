@@ -1,46 +1,14 @@
-CREATE TABLE Product(stock number CHAR(7), 
-		Price REAL, 
-		manufacturer name CHAR(20)
-		model number CHAR(20)
-		category CHAR(20), 
-		warranty INTEGER, 	
-		PRIMARY KEY (stock number))
+CREATE TABLE Product(stock_number CHAR(7), Price REAL, manufacturer_name CHAR(20), model_number CHAR(20), category CHAR(20), warranty INTEGER, PRIMARY KEY (stock_number));
 
-CREATE TABLE Description(attribute CHAR(20),
-       	     		value CHAR(20),
-			stock number CHAR(20),
-			PRIMARY KEY (attribute),
-			FOREIGN KEY (stock number) REFERENCES Product)
+CREATE TABLE Description(attribute CHAR(20), value CHAR(20), stock_number CHAR(20), PRIMARY KEY (stock_number, name), FOREIGN KEY (stock_number) REFERENCES Product);
 
-CREATE TABLE Accessory(parent stock number CHAR(20),
-	     	  	child stock number CHAR(20),
-			PRIMARY KEY(child stock number),
-			FOREIGN KEY(parent stock number) REFERENCES Product)
+CREATE TABLE Accessory(parent_stock_number CHAR(20), child_stock_number CHAR(20), PRIMARY KEY(child_stock_number), FOREIGN KEY(parent stock number) REFERENCES Product);
 
-CREATE TABLE Customer(identifier CHAR(20), 
-			password CHAR(20), 
-			name CHAR(20), 
-			email CHAR(20), 
-			address CHAR(20), 
-			status CHAR(20), 
-			PRIMARY KEY (identifier))
+CREATE TABLE Customer(customer_ID CHAR(20), password CHAR(20), name CHAR(20), email CHAR(20), address CHAR(20), status CHAR(20), PRIMARY KEY (identifier));
 
-CREATE TABLE ShoppingCart(customer ID CHAR(20),
-			stock number CHAR(20),
-			quantity INTEGER,
-			total price REAL,
-			PRIMARY KEY(customer ID, stock number),
-			FOREIGN KEY(stock number) REFERENCES Product,
-			FOREIGN KEY(customer ID) REFERENCES Customer)
+CREATE TABLE ShoppingCart(customer_ID CHAR(20), stock_number CHAR(20), quantity INTEGER, total price REAL, PRIMARY KEY(customer ID, stock number),FOREIGN KEY(stock number) REFERENCES Product, FOREIGN KEY(customer ID) REFERENCES Customer);
 
-CREATE TABLE Sales(order number INTEGER,
-			date TIMESTAMP,
-			customer ID CHAR(20),
-			customer Discount REAL,
-			temp_cost REAL,
-			final_cost REAL,
-			PRIMARY KEY (order number),
-			FOREIGN KEY (customer ID) REFERENCES Customer)
+CREATE TABLE Order(order_number INTEGER, date TIMESTAMP, customer ID CHAR(20), stock_number CHAR(20), customer Discount REAL, temp_cost REAL, final_cost REAL, PRIMARY KEY (order_number, stock_number, customer_ID), FOREIGN KEY (customer_ID) REFERENCES Customer), FOREIGN KEY (stock_number) REFERENCES Product(stock_number));
 
 
 
