@@ -1,136 +1,70 @@
-import java.io.*;
-import java.sql.*;
-import java.util.ArrayList;
+CREATE TABLE Product(stock number CHAR(7), 
+		Price REAL, 
+		manufacturer name CHAR(20)
+		model number CHAR(20)
+		category CHAR(20), 
+		warranty INTEGER, 	
+		PRIMARY KEY (stock number))
 
-public class CustomerInterface
-{
-	private int customerID;
-	private ConnectionHandler custConn;
+CREATE TABLE Description(attribute CHAR(20),
+       	     		value CHAR(20),
+			stock number CHAR(20),
+			PRIMARY KEY (attribute),
+			FOREIGN KEY (stock number) REFERENCES Product)
+
+CREATE TABLE Accessory(parent stock number CHAR(20),
+	     	  	child stock number CHAR(20),
+			PRIMARY KEY(child stock number),
+			FOREIGN KEY(parent stock number) REFERENCES Product)
+
+CREATE TABLE Customer(identifier CHAR(20), 
+			password CHAR(20), 
+			name CHAR(20), 
+			email CHAR(20), 
+			address CHAR(20), 
+			status CHAR(20), 
+			PRIMARY KEY (identifier))
+
+CREATE TABLE ShoppingCart(customer ID CHAR(20),
+			stock number CHAR(20),
+			quantity INTEGER,
+			total price REAL,
+			PRIMARY KEY(customer ID, stock number),
+			FOREIGN KEY(stock number) REFERENCES Product,
+			FOREIGN KEY(customer ID) REFERENCES Customer)
+
+CREATE TABLE Sales(order number INTEGER,
+			date TIMESTAMP,
+			customer ID CHAR(20),
+			customer Discount REAL,
+			temp_cost REAL,
+			final_cost REAL,
+			PRIMARY KEY (order number),
+			FOREIGN KEY (customer ID) REFERENCES Customer)
 
 
-	private void search(String[] searchItem)
-	{
-		//for every item in search item
-			//split it into attribute and identifier
-			//add to query
-		//once finished, search query
-	}
 
-	private void searchPrompt()
-	{
-		ArrayList<String> searches = new ArrayList<String>();
+CREATE TABLE Product(stock number CHAR(7), 
+	     		manufacturer CHAR(20),
+			model number CHAR(20),
+			quantity INTEGER, 
+			min stock level INTEGER, 
+			max stock level INTEGER, 
+			location CHAR(20), 
+			replenishment INTEGER, 
+			PRIMARY KEY (stock number))
 
-		System.out.println("Search in the form 'attribute identifier'. Press 'done' when finished with searches.");
+CREATE TABLE ShippingNotice(identifier CHAR(20), 
+				shipping company name CHAR(20), 
+				PRIMARY KEY (identifier))
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		boolean continueSearch = true;
-		int stringCounter = 0;
-		String searchQuery = null;
+CREATE TABLE Shipped_Items(manufacturer CHAR(20), 
+				model number CHAR(20), 
+				quantity INTEGER, 
+				shipID CHAR(20), 
+				PRIMARY KEY (manufacturer, model number),
+				FOREIGN KEY (shipID) REFERENCES ShippingNotice)
 
-		while (continueSearch == true)
-		{
-			try
-			{
-				searchQuery = br.readLine();
-			}
-			catch (IOException ioe)
-			{
-				System.out.println("Fuck");
-			}
-			if (!searchQuery.equals("done"))
-			{
-				searches.add(searchQuery);
-				stringCounter++;
-			}
-			else
-			{
-				System.out.println("See yA!");
-				continueSearch = false;
-			}
-		}
-
-	}
-
-	private void addItem(String searchItem)
-	{
-
-	}
-
-	private void deleteItem(String searchItem)
-	{
-
-	}
-
-	private void displayItem(String searchItem)
-	{
-
-	}
-
-	private void checkOut()
-	{
-
-	}
-
-	private void find(int orderNumber)
-	{
-
-	}
-
-	private void reRun(int orderNumber)
-	{
-
-	}
-
-	public CustomerInterface(String username, ConnectionHandler conn)
-	{
-		custConn = conn;
-
-		System.out.println("Welcome to eMART!");
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String command = null;
-
-		boolean continueAccess = true;
-
-		while (continueAccess == true)
-		{
-			System.out.println("What would you like to do?");
-
-			try
-			{
-				command = br.readLine();
-			}
-			catch (IOException ioe)
-			{
-				System.out.println("Fuck");
-			}
-
-			switch( command )
-			{
-				case "search":
-					searchPrompt();
-				case "add":
-					break;
-				case "delete":
-					break;
-				case "display":
-					break;
-				case "check out":
-					break;
-				case "find":
-					break;
-				case "re-run":
-					break;
-				case "quit":
-					continueAccess = false;
-					break;
-				case "help":
-					break;
-				default:
-					System.out.println("Unrecognized command. Enter help for list of commands");
-			}
-		}
-		
-	}
-
-}
+CREATE TABLE Inventory(stock number CHAR(20), 
+			quantity INTEGER,
+			PRIMARY KEY (stock number))
