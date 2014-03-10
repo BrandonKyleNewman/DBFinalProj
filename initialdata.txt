@@ -1,6 +1,6 @@
 CREATE TABLE Product(stock_number CHAR(7), Price REAL, manufacturer_name CHAR(20), model_number CHAR(20), category CHAR(20), warranty INTEGER, PRIMARY KEY (stock_number));
 
-CREATE TABLE Description(attribute CHAR(20), value CHAR(20), stock_number CHAR(20), PRIMARY KEY (stock_number, name), FOREIGN KEY (stock_number) REFERENCES Product);
+CREATE TABLE Description(attribute CHAR(20), value CHAR(20), stock_number CHAR(20), PRIMARY KEY (stock_number, attribute), FOREIGN KEY (stock_number) REFERENCES Product);
 
 CREATE TABLE Accessory(parent_stock_number CHAR(20), child_stock_number CHAR(20), PRIMARY KEY(child_stock_number), FOREIGN KEY(parent stock number) REFERENCES Product);
 
