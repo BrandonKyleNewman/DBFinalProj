@@ -28,7 +28,7 @@ public class CustomerInterface
 			}
 			catch (IOException ioe)
 			{
-				System.out.println("Fuck");
+				System.out.println("Not a valid command.");
 			}
 
 			switch( command )

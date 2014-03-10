@@ -7,34 +7,36 @@ public class Emart
 	{
 		ConnectionHandler C = new ConnectionHandler();
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String userType = null;
+		String userType;
+		LoginHandler L;
 
-
-		System.out.println("Hello, are you a manager or a customer?");
-
+		//System.out.println("Hello, are you a manager or a customer?");
+		System.out.println("Hello, please enter your information as: ACCOUNT_TYPE ID PASSWORD ");
 		boolean loggedIn = false;
 		while (loggedIn == false)
 		{		
 			try {
-				userType = br.readLine();
+			    userType = args[0];
 			}catch (IOException ioe){
-				System.out.println("Error reading command. Exiting.");
-				System.exit(0);
+			    System.out.println("Error reading command. Exiting.");
+			    System.exit(0);
 			}
 
 			if (userType.equals("customer") == true)
 			{
-				CustomerInterface U = new CustomerInterface("bnewman", C);
-				loggedIn = true;
+			    L = new LoginHandler("customer", args[1], args[2], C);
+			    CustomerInterface U = new CustomerInterface(args[1], C);
+			    loggedIn = true;
 			}
 			else if (userType.equals("manager") == true)
 			{	
-				ManagerInterface M = new ManagerInterface("bnewman", C);
-				loggedIn = true;
+			    L = new LoginHandler("manager", args[1], args[2], C);
+			    ManagerInterface M = new ManagerInterface(args[1], C);
+			    loggedIn = true;
 			}
 			else
 			{
-				System.out.println("I'm sorry, I didn't quite get that.");
+			    System.out.println("I'm sorry, I didn't quite get that.");
 			}
 		}
 	}
