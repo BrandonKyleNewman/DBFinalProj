@@ -22,13 +22,53 @@ public class ManagerInterface
 	    System.out.exit(0);
 	}
 
-	String month = commandArg;
+	String monthString = commandArg;
+	int monthInt = 0;
+	switch(monthString) 
+	{
+	case "January": 
+	    monthInt = 1;
+	    break;
+	case "February":
+	    monthInt = 2;
+	    break;
+	case "March": 
+	    monthInt = 3;
+	    break;
+	case "April": 
+	    monthInt = 4;
+	    break;
+	case "May": 
+	    monthInt = 5;
+	    break;
+	case "June": 
+	    monthInt = 6;
+	    break;
+	case "July": 
+	    monthInt = 7;
+	    break;
+	case "August": 
+	    monthInt = 8;
+	    break;
+	case "September": 
+	    monthInt = 9;
+	    break;
+	case "October": 
+	    monthInt = 10;
+	    break;
+	case "November": 
+	    monthInt = 11;
+	    break;
+	case "December": 
+	    monthInt = 12;
+	    break;
+	}
 
 	//query sales table, returning sales report for the given month
 
 	//print out customer who spent the most money in the month
 
-	String queryCust = "SELECT temp.customerID FROM (SELECT s.customerID, SUM(s.finalcost) AS money FROM Sales s WHERE s.month = '" + month + "' GROUP BY s.customerID) temp WHERE temp.money = (SELECT MAX(money2) FROM (SELECT SUM(s2.finalcost) AS money2 FROM Sales s2 WHERE s2.month = '" + month + "' GROUP BY s2.customerID))";
+	String queryCust = "SELECT temp.customerID FROM (SELECT s.customerID, SUM(s.finalcost) AS money FROM Sales s WHERE s.month = '" + monthInt + "' GROUP BY s.customerID) temp WHERE temp.money = (SELECT MAX(money2) FROM (SELECT SUM(s2.finalcost) AS money2 FROM Sales s2 WHERE s2.month = '" + month + "' GROUP BY s2.customerID))";
 
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();
@@ -38,7 +78,7 @@ public class ManagerInterface
 	    System.exit(0);
 	}
 	
-	System.out.println("Sales report for the month of " + month);
+	System.out.println("Sales report for the month of " + monthString);
 
 	String id = "";
     
@@ -50,11 +90,11 @@ public class ManagerInterface
 	    System.exit(0);
 	}
 	
-	System.out.println("Customer who spent the most in " + month + ": " + id);
+	System.out.println("Customer who spent the most in " + monthString + ": " + id);
 
 	//print out the (quantity, price) of sale per product in given month
 
-	String productReport = "SELECT s.stocknumber, SUM(s.quantity) AS qty, SUM(s.finalcost) AS cost FROM Sales s WHERE s.month = '" + month + "' GROUP BY s.stocknumber";
+	String productReport = "SELECT s.stocknumber, SUM(s.quantity) AS qty, SUM(s.finalcost) AS cost FROM Sales s WHERE s.month = '" + monthInt + "' GROUP BY s.stocknumber";
 
 	try {
 	    //Statement stm = custConn.getConnection().createStatement();
@@ -64,7 +104,7 @@ public class ManagerInterface
 	    System.exit(0);
 	}
 
-	System.out.println("Summary of sales per product in " + month);
+	System.out.println("Summary of sales per product in " + monthString);
 
 	try{
 	    while (rs.next()) {
@@ -77,7 +117,7 @@ public class ManagerInterface
 
 	//print out the (quantity, price) of sale per category in given month
 
-	String categoryReport = "SELECT s.category, SUM(s.quantity) AS qty, SUM(s.finalcost) AS cost FROM Sales s, Product p WHERE p.stocknumber = s.stocknumber AND s.month = '" +  month + "' GROUP BY s.category";
+	String categoryReport = "SELECT s.category, SUM(s.quantity) AS qty, SUM(s.finalcost) AS cost FROM Sales s, Product p WHERE p.stocknumber = s.stocknumber AND s.month = '" + monthInt + "' GROUP BY s.category";
 	
 	try {
 	    // Statement stm = custConn.getConnection().createStatement();
@@ -87,7 +127,7 @@ public class ManagerInterface
 	    System.exit(0);
 	}
 
-	System.out.println("Summary of sales per category in " + month);
+	System.out.println("Summary of sales per category in " + monthString);
 
 	try{
 	    while (rs.next()) {
