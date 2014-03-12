@@ -106,19 +106,19 @@ public class CustomerInterface
 	//need to modify for description
 	for (int i = 0; i < stringCounter; i++)
 	{
-		String[] parts    = searches[i].split(" ");
+		String[] parts    = searches.get(i).split(" ");
 		String attribute  = parts[0];
 		String identifier = parts[1];
 
-		String qry = " " + parts[0] + "=" + parts[1] + " ";
+		String qry = " " + parts[0] + "=" + "'" + parts[1] + "'" + " ";
 		queries.add(qry);
 	}
 
 	String finalQuery = "select * from Product P where";
 
-	for (int i = 0; i < queries.length(); i++)
+	for (int i = 0; i < queries.size(); i++)
 	{
-		String queryAddition = queries.at(i);
+		String queryAddition = queries.get(i);
 		finalQuery = finalQuery + queryAddition;
 	}
 
