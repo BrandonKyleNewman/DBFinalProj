@@ -32,12 +32,14 @@ public class DataInitialization {
 
 						//Product Table
 			Statement st = conn.createStatement();
+			System.out.println("testing");
 			String createTable = 	"CREATE TABLE Product(	stock_number CHAR(7)," + 
 								  	"Price REAL, manufacturer_name CHAR(20)," +
 								 	"model_number CHAR(20)," +
 									"category CHAR(20)," +
 									"warranty INTEGER," +  
 									"PRIMARY KEY (stock_number))";
+			System.out.println("before result set");
 			ResultSet rs = st.executeQuery(createTable);
 			System.out.println("Product table created");
 			
@@ -84,12 +86,13 @@ public class DataInitialization {
 
 			//Orders Table
 			createTable = 		"CREATE TABLE Orders(order_number CHAR(20),"	 +  
+			                                                "month INTEGER," +
 								    	"sale_date DATE," 	+  
 									"customer_ID CHAR(20),"	+ 
 									"stock_number CHAR(20)," +
 									"customer_Discount REAL," +  
-									"temp_cost REAL," +
-									"final_cost REAL," +  
+ 									"final_cost REAL," +
+			                                                "quantity INTEGER," +
 									"PRIMARY KEY(order_number, stock_number, customer_ID)," +
 									"FOREIGN KEY(customer_ID) REFERENCES Customer," +
 									"FOREIGN KEY(stock_number) REFERENCES Product)";

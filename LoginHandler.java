@@ -44,21 +44,24 @@ public class LoginHandler {
 
 	}
 
-	if (correctUserPass != password) {
-	    System.out.println("Incorrect password. Quitting Program...");
-	    System.exit(1);
 
-	}
 
 	if (correctUserAccount != account) {
 	    System.out.println("Incorrect account. Quitting Program...");
 	    System.exit(1);
 	}
+	System.out.println("Correct account id.");
+	/*
+	if (correctUserPass != password) {
+	    System.out.println("correct password: " + correctUserPass + "entered password: " + password);
+	    System.out.println("Incorrect password. Quitting Program...");
+	    System.exit(1);
+	    }*/
     }
 
     private String pullPassword(String uname) throws InvalidUsernameException, SQLException {
 	
-	String queryResult = "SELECT * FROM customer c WHERE c.identifier = '" + uname + "'";
+	String queryResult = "SELECT * FROM Customer c WHERE c.customer_ID = '" + uname + "'";
 	
 	Statement stmt = myC.getConnection().createStatement();
 	
@@ -78,7 +81,7 @@ public class LoginHandler {
 
 	String a = "";
 
-	String queryResult = "SELECT * FROM customer c WHERE c.identifier = '" + uname + "'";
+	String queryResult = "SELECT * FROM Customer c WHERE c.customer_ID = '" + uname + "'";
 	    
 	Statement stmt = myC.getConnection().createStatement();
 	    
@@ -88,7 +91,7 @@ public class LoginHandler {
 
 	while (rs.next())
 	    {
-		acc = (rs.getInt("manager"));
+		acc = (rs.getInt("isManager"));
 		if (acc == 0)
 		    a = "customer";
 		else
