@@ -68,13 +68,13 @@ public class ManagerInterface
 
 	//print out customer who spent the most money in the month
 	String id = "";
-	String queryCust = "SELECT temp.customerID FROM (SELECT s.customerID, SUM(s.finalcost) AS money FROM Sales s WHERE s.month = '" + monthInt + "' GROUP BY s.customerID) temp WHERE temp.money = (SELECT MAX(money2) FROM (SELECT SUM(s2.finalcost) AS money2 FROM Sales s2 WHERE s2.month = '" + monthInt + "' GROUP BY s2.customerID))";
+	String queryCust = "SELECT temp.customer_ID FROM (SELECT s.customer_ID, SUM(s.final_cost) AS money FROM Orders s WHERE s.month = '" + monthInt + "' GROUP BY s.customer_ID) temp WHERE temp.money = (SELECT MAX(money2) FROM (SELECT SUM(s2.final_cost) AS money2 FROM Orders s2 WHERE s2.month = '" + monthInt + "' GROUP BY s2.customer_ID))";
 
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();
 	    ResultSet rs = stmt.executeQuery(queryCust);
 	    while (rs.next()) 
-		id = rs.getString("customerID");
+		id = rs.getString("customer_ID");
 	} catch(SQLException e) {
 	    System.out.println("Error finding customer. Exiting.");
 	    System.exit(0);
@@ -87,14 +87,14 @@ public class ManagerInterface
 
 	//print out the (quantity, price) of sale per product in given month
 
-	String productReport = "SELECT s.stocknumber, SUM(s.quantity) AS qty, SUM(s.finalcost) AS cost FROM Sales s WHERE s.month = '" + monthInt + "' GROUP BY s.stocknumber";
+	String productReport = "SELECT s.stock_number, SUM(s.quantity) AS qty, SUM(s.final_cost) AS cost FROM Orders s WHERE s.month = '" + monthInt + "' GROUP BY s.stock_number";
 
 	try {
 	    Statement stm = custConn.getConnection().createStatement();
 	    ResultSet rs = stm.executeQuery(productReport);
 	    System.out.println("Summary of sales per product in " + monthString);	    
 	    while (rs.next()) 
-		System.out.println("Product: " + rs.getString("stocknumber") + " quantity: " + rs.getInt("qty") + "price: " + rs.getDouble("cost"));
+		System.out.println("Product: " + rs.getString("stock_number") + " quantity: " + rs.getInt("qty") + "price: " + rs.getDouble("cost"));
 	} catch(SQLException e) {
 	    System.out.println("Error finding product info. Exiting");
 	    System.exit(0);
@@ -103,7 +103,7 @@ public class ManagerInterface
 
 	//print out the (quantity, price) of sale per category in given month
 
-	String categoryReport = "SELECT s.category, SUM(s.quantity) AS qty, SUM(s.finalcost) AS cost FROM Sales s, Product p WHERE p.stocknumber = s.stocknumber AND s.month = '" + monthInt + "' GROUP BY s.category";
+	String categoryReport = "SELECT p.category, SUM(s.quantity) AS qty, SUM(s.final_cost) AS cost FROM Orders s, Product p WHERE p.stock_number = s.stock_number AND s.month = '" + monthInt + "' GROUP BY p.category";
 	
 	try {
 	    Statement stm = custConn.getConnection().createStatement();
@@ -140,7 +140,7 @@ public class ManagerInterface
 
 	String custID = commandArg;
 
-	String queryCustID = "SELECT * FROM Customer c WHERE c.identifier = '" + custID + "'";
+	String queryCustID = "SELECT * FROM Customer c WHERE c.customer_ID = '" + custID + "'";
        
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();
@@ -161,7 +161,7 @@ public class ManagerInterface
 
 	String newStatus = commandArg;
 
-	String updateStatus = "UPDATE Customer SET status = '" + newStatus + "' WHERE identifier = '" + custID + "'";
+	String updateStatus = "UPDATE Customer SET status = '" + newStatus + "' WHERE customer_ID = '" + custID + "'";
 
 	try {
 	    Statement stm = custConn.getConnection().createStatement();
@@ -200,7 +200,7 @@ public class ManagerInterface
 
 	String stockNum = commandArg;
 
-	String queryStockNum = "SELECT * FROM Product p WHERE p.stocknumber = '" + stockNum + "'";   // make sure the stock number exists
+	String queryStockNum = "SELECT * FROM Product p WHERE p.stock_number = '" + stockNum + "'";   // make sure the stock number exists
 
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();
@@ -228,7 +228,7 @@ public class ManagerInterface
 	    System.exit(0);
 	}
 
-	String updateQuery = "UPDATE Product p SET p.price = '" + newPrice + "' WHERE p.stocknumber = '" + stockNum + "'";
+	String updateQuery = "UPDATE Product p SET p.Price = '" + newPrice + "' WHERE p.stock_number = '" + stockNum + "'";
 
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();

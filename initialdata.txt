@@ -1,38 +1,47 @@
 CREATE TABLE Product(stock_number CHAR(7), Price REAL, manufacturer_name CHAR(20), model_number CHAR(20), category CHAR(20), warranty INTEGER, PRIMARY KEY (stock_number));
 
-CREATE TABLE Description(attribute CHAR(20), value CHAR(20), stock_number CHAR(20), PRIMARY KEY (stock_number, attribute), FOREIGN KEY (stock_number) REFERENCES Product);
+CREATE TABLE Description(attribute CHAR(20), value CHAR(20), stock_number CHAR(7), PRIMARY KEY (stock_number, attribute), FOREIGN KEY (stock_number) REFERENCES Product(stock_number));
 
-CREATE TABLE Accessory(parent_stock_number CHAR(20), child_stock_number CHAR(20), PRIMARY KEY(child_stock_number), FOREIGN KEY(parent stock number) REFERENCES Product);
+CREATE TABLE Accessory(parent_stock_number CHAR(20), child_stock_number CHAR(20), PRIMARY KEY(child_stock_number), FOREIGN KEY(parent_stock_number) REFERENCES Product);
 
-CREATE TABLE Customer(customer_ID CHAR(20), password CHAR(20), name CHAR(20), email CHAR(20), address CHAR(20), status CHAR(20), PRIMARY KEY (identifier));
+CREATE TABLE Customer(customer_ID CHAR(20), password CHAR(20), name CHAR(20), email CHAR(20), address CHAR(20), isManager INTEGER, status CHAR(20), PRIMARY KEY (customer_ID));
 
-CREATE TABLE ShoppingCart(customer_ID CHAR(20), stock_number CHAR(20), quantity INTEGER, total price REAL, PRIMARY KEY(customer ID, stock number),FOREIGN KEY(stock number) REFERENCES Product, FOREIGN KEY(customer ID) REFERENCES Customer);
+CREATE TABLE ShoppingCart(customer_ID CHAR(20), stock_number CHAR(20), quantity INTEGER, total_price REAL, PRIMARY KEY(customer_ID, stock_number), FOREIGN KEY(stock_number) REFERENCES Product, FOREIGN KEY(customer_ID) REFERENCES Customer);
 
-CREATE TABLE Order(order_number INTEGER, date TIMESTAMP, customer ID CHAR(20), stock_number CHAR(20), customer Discount REAL, temp_cost REAL, final_cost REAL, PRIMARY KEY (order_number, stock_number, customer_ID), FOREIGN KEY (customer_ID) REFERENCES Customer), FOREIGN KEY (stock_number) REFERENCES Product(stock_number));
+CREATE TABLE Orders(order_number CHAR(20), sale_date DATE, customer_ID CHAR(20), stock_number CHAR(20), customer_Discount REAL, temp_cost REAL, final_cost REAL, PRIMARY KEY(order_number, stock_number, customer_ID), FOREIGN KEY(customer_ID) REFERENCES Customer, FOREIGN KEY(stock_number) REFERENCES Product);
 
 
 
-CREATE TABLE Product(stock number CHAR(7), 
-	     		manufacturer CHAR(20),
-			model number CHAR(20),
-			quantity INTEGER, 
-			min stock level INTEGER, 
-			max stock level INTEGER, 
-			location CHAR(20), 
-			replenishment INTEGER, 
-			PRIMARY KEY (stock number))
 
-CREATE TABLE ShippingNotice(identifier CHAR(20), 
-				shipping company name CHAR(20), 
-				PRIMARY KEY (identifier))
+CREATE TABLE ProductDepot(stock_number CHAR(7), manufacturer CHAR(20), model_number CHAR(20), quantity INTEGER, min_stock_level INTEGER, max_stock_level INTEGER, location CHAR(20), replenishment INTEGER, PRIMARY KEY(stock_number));
 
-CREATE TABLE Shipped_Items(manufacturer CHAR(20), 
-				model number CHAR(20), 
-				quantity INTEGER, 
-				shipID CHAR(20), 
-				PRIMARY KEY (manufacturer, model number),
-				FOREIGN KEY (shipID) REFERENCES ShippingNotice)
+CREATE TABLE ShippingNotice( shipID CHAR(20), shipping_company_name CHAR(20), PRIMARY KEY (shipID));
 
-CREATE TABLE Inventory(stock number CHAR(20), 
-			quantity INTEGER,
-			PRIMARY KEY (stock number))
+CREATE TABLE Shipped_Items(manufacturer CHAR(20),model_number CHAR(20), quantity INTEGER, shipID CHAR(20), PRIMARY KEY (manufacturer, model_number), FOREIGN KEY (shipID) REFERENCES ShippingNotice);
+
+
+
+
+
+
+
+
+
+
+INSERT INTO Product(stock_number, Price, manufacturer_name, model_number, category, warranty) VALUES ('ab00101', 1630, 'HP', '6111', 'Laptop', 12);
+INSERT INTO ProductDepot(stock_number, manufacturer, model_number, quantity, min_stock_level, max_stock_level, location, replenishment) VALUES ('ab00101', 'HP', '6111', 2, 1, 10, 'A9', 0);
+INSERT INTO Description(attribute, value, stock_number) VALUES ('Processor speed', '3.33GHz', 'ab00101');
+INSERT INTO Description(attribute, value, stock_number) VALUES ('RAM size', '512 Mb', 'ab00101');
+
+INSERT INTO Product(stock_number, Price, manufacturer_name, model_number, category, warranty) VALUES ('ab00201', 239, 'Dell', '420', 'Desktop', 12);
+INSERT INTO ProductDepot(stock_number, manufacturer, model_number, quantity, min_stock_level, max_stock_level, location, replenishment) VALUES ('ab00201', 'Dell', '420', 3, 2, 15, 'A7', 0);
+INSERT INTO Description(attribute, value, stock_number) VALUES ('Processor speed', '2.53Ghz', 'ab00201');
+
+
+
+
+
+
+//CREATE TABLE Inventory(stock_number CHAR(20), 
+//		quantity INTEGER,
+//			PRIMARY KEY (stock number))

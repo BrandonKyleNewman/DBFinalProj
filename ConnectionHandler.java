@@ -8,12 +8,11 @@ public class ConnectionHandler {
 	private Connection conn;
 
 	ConnectionHandler() throws SQLException {
-		try 
-		{
+		
+		try {
 			DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
 		}
-		catch (SQLException e)
-		{
+		catch (SQLException e) {
 			System.out.println("Set up a class path to ojdbc6.jar");
 			System.exit(1);
 		}
@@ -28,7 +27,8 @@ public class ConnectionHandler {
 		System.out.println("Connected!");
 	}
 
-	public Connection getConnection() {
+	public Connection getConnection()
+	{
 		return conn;
 	}
 }
