@@ -10,14 +10,123 @@ public class ManagerInterface
     
     public void printMonthlySales()
     {
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	String commandArg = null;
+
+	System.out.println("Please enter the month.");
+
+	try{
+	    commandArg = br.readLine();
+	} catch(IOException ioe) {
+	    System.out.println("Error reading month.Exiting...");
+	    System.exit(0);
+	}
+
+	String monthString = commandArg;
+	int monthInt = 0;
+	switch(monthString) 
+	{
+	case "January": 
+	    monthInt = 1;
+	    break;
+	case "February":
+	    monthInt = 2;
+	    break;
+	case "March": 
+	    monthInt = 3;
+	    break;
+	case "April": 
+	    monthInt = 4;
+	    break;
+	case "May": 
+	    monthInt = 5;
+	    break;
+	case "June": 
+	    monthInt = 6;
+	    break;
+	case "July": 
+	    monthInt = 7;
+	    break;
+	case "August": 
+	    monthInt = 8;
+	    break;
+	case "September": 
+	    monthInt = 9;
+	    break;
+	case "October": 
+	    monthInt = 10;
+	    break;
+	case "November": 
+	    monthInt = 11;
+	    break;
+	case "December": 
+	    monthInt = 12;
+	    break;
+	}
+
+	//query sales table, returning sales report for the given month
+
+	//print out customer who spent the most money in the month
+	String id = "";
+	String queryCust = "SELECT temp.customer_ID FROM (SELECT s.customer_ID, SUM(s.final_cost) AS money FROM Orders s WHERE s.month = '" + monthInt + "' GROUP BY s.customer_ID) temp WHERE temp.money = (SELECT MAX(money2) FROM (SELECT SUM(s2.final_cost) AS money2 FROM Orders s2 WHERE s2.month = '" + monthInt + "' GROUP BY s2.customer_ID))";
+
+	try {
+	    Statement stmt = custConn.getConnection().createStatement();
+	    ResultSet rs = stmt.executeQuery(queryCust);
+	    while (rs.next()) 
+		id = rs.getString("customer_ID");
+	} catch(SQLException e) {
+	    System.out.println("Error finding customer. Exiting.");
+	    System.exit(0);
+	}
 	
+	System.out.println("SALES REPORT FOR THE MONTH OF " + monthString);
+
+    
+	System.out.println("Customer who spent the most in " + monthString + ": " + id);
+
+	//print out the (quantity, price) of sale per product in given month
+
+	String productReport = "SELECT s.stock_number, SUM(s.quantity) AS qty, SUM(s.final_cost) AS cost FROM Orders s WHERE s.month = '" + monthInt + "' GROUP BY s.stock_number";
+
+	try {
+	    Statement stm = custConn.getConnection().createStatement();
+	    ResultSet rs = stm.executeQuery(productReport);
+	    System.out.println("Summary of sales per product in " + monthString);	    
+	    while (rs.next()) 
+		System.out.println("Product: " + rs.getString("stock_number") + " quantity: " + rs.getInt("qty") + "price: " + rs.getDouble("cost"));
+	} catch(SQLException e) {
+	    System.out.println("Error finding product info. Exiting");
+	    System.exit(0);
+	}
+
+
+	//print out the (quantity, price) of sale per category in given month
+
+	String categoryReport = "SELECT p.category, SUM(s.quantity) AS qty, SUM(s.final_cost) AS cost FROM Orders s, Product p WHERE p.stock_number = s.stock_number AND s.month = '" + monthInt + "' GROUP BY p.category";
+	
+	try {
+	    Statement stm = custConn.getConnection().createStatement();
+	    ResultSet rs = stm.executeQuery(categoryReport);
+	    System.out.println("Summary of sales per category in " + monthString);
+	    while (rs.next()) 
+		System.out.println("Category: " + rs.getString("category") + " quantity: " + rs.getInt("qty") + "price: " + rs.getDouble("cost"));
+
+	} catch(SQLException e) {
+	    System.out.println("Error finding category info. Exiting");
+	    System.exit(0);
+	}
+
+
+	System.out.println("End of monthly report");
+			   
     }
     
     // Manager can adjust a customer's status manually
     public void customerAdjust()
     {
 
-	BufferedReader br = new BufferedReader(new InputStreamReader(system.in));
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	String commandArg = null;
 
 	System.out.println("Please enter the customer ID.");
@@ -26,12 +135,12 @@ public class ManagerInterface
 	    commandArg = br.readLine();
 	} catch(IOException ioe) {
 	    System.out.println("Error reading customer ID.Exiting...");
-	    System.out.exit(0);
+	    System.exit(0);
 	}
 
 	String custID = commandArg;
 
-	String queryCustID = "SELECT * FROM Customer c WHERE c.identifier = '" + custID + "'";
+	String queryCustID = "SELECT * FROM Customer c WHERE c.customer_ID = '" + custID + "'";
        
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();
@@ -52,14 +161,14 @@ public class ManagerInterface
 
 	String newStatus = commandArg;
 
-	String queryStatus = "UPDATE Customer SET status = '" + newStatus + "' WHERE identifier = '" + custID + "'";
+	String updateStatus = "UPDATE Customer SET status = '" + newStatus + "' WHERE customer_ID = '" + custID + "'";
 
 	try {
 	    Statement stm = custConn.getConnection().createStatement();
-	    ResultSet r = stm.executeQuery(queryStatus);
+	    int r = stm.executeUpdate(updateStatus);
 	} catch (Exception e) {
 	    System.out.println("Error changing customer status. Exiting.");
-	    System.out.exit(0);
+	    System.exit(0);
 	}
 
 	System.out.println("Successfully changed customer status.");
@@ -77,7 +186,7 @@ public class ManagerInterface
     
     public void changePrice()
     {
-	BufferedReader br = new BufferedReader(new InputStreamReader(system.in));
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	String commandArg = null;
 
 	System.out.println("Please enter the stock number of the item.");
@@ -91,7 +200,7 @@ public class ManagerInterface
 
 	String stockNum = commandArg;
 
-	String queryStockNum = "SELECT * FROM Product p WHERE p.stocknumber = '" + stockNum + "'";   // make sure the stock number exists
+	String queryStockNum = "SELECT * FROM Product p WHERE p.stock_number = '" + stockNum + "'";   // make sure the stock number exists
 
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();
@@ -119,11 +228,11 @@ public class ManagerInterface
 	    System.exit(0);
 	}
 
-	String updateQuery = "UPDATE Product p SET p.price = '" + newPrice + "' WHERE p.stocknumber = '" + stockNum + "'";
+	String updateQuery = "UPDATE Product p SET p.Price = '" + newPrice + "' WHERE p.stock_number = '" + stockNum + "'";
 
 	try {
 	    Statement stmt = custConn.getConnection().createStatement();
-	    ResultSet rs = stmt.executeQuery(updateQuery);
+	    int r = stmt.executeUpdate(updateQuery);
 	} catch (Exception e) {
 	    System.out.println("Error changing price. Exiting.");
 	    System.exit(0);
@@ -137,6 +246,11 @@ public class ManagerInterface
     public void deleteUnneededTrans()
     {
 	
+	//query the database, deleting all but the most recent 3 sales transactions for each customer
+	
+	
+
+
     }
     
     public ManagerInterface(String username, ConnectionHandler conn)
@@ -166,6 +280,7 @@ public class ManagerInterface
 		switch( command )
 		    {
 		    case "print monthly sales":
+			printMonthlySales();
 			break;
 		    case "adjust customer status":
 			customerAdjust();

@@ -106,23 +106,43 @@ public class CustomerInterface
 	//need to modify for description
 	for (int i = 0; i < stringCounter; i++)
 	{
-		String[] parts    = searches[i].split(" ");
+		String[] parts    = searches.get(i).split(" ");
 		String attribute  = parts[0];
 		String identifier = parts[1];
 
-		String qry = " " + parts[0] + "=" + parts[1] + " ";
+		String qry = " " + parts[0] + "=" + "'" + parts[1] + "'" + " ";
 		queries.add(qry);
 	}
 
-	String finalQuery = "select * from Product P where"
+	String finalQuery = "select * from Product P where";
 
-	for (int i = 0; i < queries.length(); i++)
+	for (int i = 0; i < queries.size(); i++)
 	{
-		String queryAddition = queries.at(i);
-		finalQuery = finalQuery + queryAddition;
+		String queryAddition = queries.get(i);
+		if (i != queries.size()-1)
+			finalQuery = finalQuery + queryAddition + "AND";
+		else
+			finalQuery = finalQuery + queryAddition;
 	}
 
+	Statement st = null;
+	ResultSet rs = null;
+
 	System.out.println(finalQuery);
+
+	try {
+		st = custConn.getConnection().createStatement();
+		rs = st.executeQuery(finalQuery);
+		
+		while (rs.next())
+		{
+			System.out.println("Product Stock number" + " " + rs.getString("stock_number"));
+			System.out.println("Product Manufacturer" + " " + rs.getString("manufacturer_name"));	
+		}
+	} catch (Exception e) {
+		System.out.println("Error executing queries");
+	}
+
 	
     }
     

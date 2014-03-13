@@ -46,13 +46,19 @@ public class LoginHandler {
 	if (correctUserPass.trim().equals(password) == false) {
 	    System.out.println("Incorrect password. Quitting Program...");
 	    System.exit(1);
-
 	}
 
 	if (correctUserAccount.trim().equals(identification) == false) {
 	    System.out.println("Incorrect account. Quitting Program...");
 	    System.exit(1);
 	}
+	System.out.println("Correct account id.");
+	/*
+	if (correctUserPass != password) {
+	    System.out.println("correct password: " + correctUserPass + "entered password: " + password);
+	    System.out.println("Incorrect password. Quitting Program...");
+	    System.exit(1);
+	    }*/
     }
 
     private String pullPassword(String password) throws InvalidUsernameException, SQLException {
@@ -74,6 +80,8 @@ public class LoginHandler {
     }
 
     private String pullAccount(String uname) throws InvalidUsernameException, SQLException{
+
+	String a = "";
 
 	String queryResult = "SELECT * FROM Customer c WHERE c.customer_ID = '" + uname + "'";
 	    
