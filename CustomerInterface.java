@@ -119,10 +119,30 @@ public class CustomerInterface
 	for (int i = 0; i < queries.size(); i++)
 	{
 		String queryAddition = queries.get(i);
-		finalQuery = finalQuery + queryAddition;
+		if (i != queries.size()-1)
+			finalQuery = finalQuery + queryAddition + "AND";
+		else
+			finalQuery = finalQuery + queryAddition;
 	}
 
+	Statement st = null;
+	ResultSet rs = null;
+
 	System.out.println(finalQuery);
+
+	try {
+		st = custConn.getConnection().createStatement();
+		rs = st.executeQuery(finalQuery);
+		
+		while (rs.next())
+		{
+			System.out.println("Product Stock number" + " " + rs.getString("stock_number"));
+			System.out.println("Product Manufacturer" + " " + rs.getString("manufacturer_name"));	
+		}
+	} catch (Exception e) {
+		System.out.println("Error executing queries");
+	}
+
 	
     }
     
