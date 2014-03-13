@@ -67,7 +67,7 @@ public class DataInitialization {
 									"name CHAR(20)," + 
 									"email CHAR(20)," +
 									"address CHAR(30)," +
-									"isManager INTEGER," +
+									"isManager CHAR(20)," +
 									"status CHAR(20)," +
 									"PRIMARY KEY (customer_ID))";
 			rs = st.executeQuery(createTable);
@@ -372,32 +372,32 @@ public class DataInitialization {
 			
 
 			//Inserting the 1st User
-			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Rhagrid', 'Rhagrid', 'Rubeus Hagrid', 'rhagrid@cs', '123 MyStreet, Goleta apt A, Ca', 0, 'Gold')";
+			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Rhagrid', 'Rhagrid', 'Rubeus Hagrid', 'rhagrid@cs', '123 MyStreet, Goleta apt A, Ca', 'false', 'Gold')";
 			rs = st.executeQuery(insertData);
 			System.out.println("Inserted User 1");
 
 			//Inserting the 2nd User
-			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Mhooch', 'Mhooch', 'Madam Hooch', 'mhooch@cs', '123 MyStreet, Goleta apt B, Ca', 0, 'Silver')";
+			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Mhooch', 'Mhooch', 'Madam Hooch', 'mhooch@cs', '123 MyStreet, Goleta apt B, Ca', 'false', 'Silver')";
 			rs = st.executeQuery(insertData);
 			System.out.println("Inserted User 2");
 
 			//Inserting the 3rd User
-			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Amoody', 'Amoody', 'Alastor Moody', 'amoody@cs', '123 MyStreet, Goleta apt C, Ca', 0, 'New')";
+			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Amoody', 'Amoody', 'Alastor Moody', 'amoody@cs', '123 MyStreet, Goleta apt C, Ca', 'false', 'New')";
 			rs = st.executeQuery(insertData);
 			System.out.println("Inserted User 3");
 
 			//Inserting the 4th User
-			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Pquirrell', 'Pquirrell', 'Professor Quirrell', 'pquirrell@cs', '123 MyStreet, Goleta apt D, Ca', 0, 'New')";
+			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Pquirrell', 'Pquirrell', 'Professor Quirrell', 'pquirrell@cs', '123 MyStreet, Goleta apt D, Ca', 'false', 'New')";
 			rs = st.executeQuery(insertData);
 			System.out.println("Inserted User 4");
 
 			//Inserting the 5th User
-			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Sblack', 'Sblack', 'Sirius Black', 'sblack@cs', '123 MyStreet, Goleta apt E, Ca', 1, 'Green')";
+			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Sblack', 'Sblack', 'Sirius Black', 'sblack@cs', '123 MyStreet, Goleta apt E, Ca', 'true', 'Green')";
 			rs = st.executeQuery(insertData);
 			System.out.println("Inserted User 5");
 
 			//Inserting the 5th User
-			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Ddiggle', 'Ddiggle', 'Dedalus Diggle', 'ddiggle@cs', '123 MyStreet, Goleta apt F, Ca', 0, 'Green')";
+			insertData = "INSERT INTO Customer(customer_ID, password, name, email, address, isManager, status) VALUES ('Ddiggle', 'Ddiggle', 'Dedalus Diggle', 'ddiggle@cs', '123 MyStreet, Goleta apt F, Ca', 'false', 'Green')";
 			rs = st.executeQuery(insertData);
 			System.out.println("Inserted User 6");
 

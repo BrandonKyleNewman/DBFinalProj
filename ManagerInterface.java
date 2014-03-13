@@ -48,7 +48,7 @@ public class ManagerInterface
 	    monthInt = 7;
 	    break;
 	case "August": 
-	    monthInt = 8;
+ 	    monthInt = 8;
 	    break;
 	case "September": 
 	    monthInt = 9;
@@ -179,6 +179,10 @@ public class ManagerInterface
     //Fairly big priority. Links together the two databases.
     public void sendOrder()
     {
+	//query the orders table by order number
+	//
+
+	
 	
     }
     
