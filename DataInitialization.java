@@ -88,7 +88,7 @@ public class DataInitialization {
 			//Orders Table
 			createTable = 		"CREATE TABLE Orders(order_number CHAR(20),"		+  
 			                                                "month INTEGER," 		+
-								    	"sale_date DATE," 		+  
+								    	"timestamp TIMESTAMP," 		+  
 									"customer_ID CHAR(20),"		+ 
 									"stock_number CHAR(20)," 	+
 									"customer_Discount REAL," 	+  

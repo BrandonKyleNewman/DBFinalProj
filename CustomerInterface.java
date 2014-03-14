@@ -13,6 +13,12 @@ public class CustomerInterface
 	return month;
     }
     
+    private Timestamp getCurrentTime() {
+	Date date = new Date();
+	Timestamp currentTime = new Timestamp(date.getTime());
+	return currentTime;
+    }
+
     public CustomerInterface(String username, ConnectionHandler conn)
     {
 	custConn = conn;
@@ -55,6 +61,7 @@ public class CustomerInterface
 		    case "check out":
 			break;
 		    case "find":
+			find();
 			break;
 		    case "re-run":
 			break;
@@ -179,7 +186,7 @@ public class CustomerInterface
 			String priceOfItem = "select p.Price from Product p where p.stock_number= '" + stock_num + "'";
 			rs = st.executeQuery(priceOfItem);
 
-			rs.getInt("Price")
+			rs.getInt("Price");
 
 			//query price of item
 			String insertData = "INSERT INTO ShoppingCart(customer_ID, stock_number, quantity)" + 
@@ -283,10 +290,11 @@ public class CustomerInterface
     
     private void checkOut()
     {
-	int orderNum;
+	String orderNum;
 	boolean isUnique = false;
 	Statement st = null;
 	ResultSet rs = null;
+	Random generator = new Random();
 
 	while (isUnique == false)
 	{
@@ -308,14 +316,148 @@ public class CustomerInterface
 	//quantity is the total number of that product sold
     }
     
-    private void find(int orderNumber)
+    private void find()
     {
+
+	System.out.println("Please enter the order number");
+
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+	String ordNum = "";
+
+	try{
+	    ordNum = br.readLine();
+	} catch (IOException ioe) {
+	    System.out.println("Error reading order number. Exiting");
+	    System.exit(1);
+	}
+
+	String queryFind = "SELECT * FROM Orders o WHERE o.order_number = '" + ordNum + "'";
+	
+	Timestamp t;
+
+
+	Statement st = null;
+	
+	try {
+	    st = custConn.getConnection().createStatement();
+	    ResultSet rs = st.executeQuery(queryFind);
+	    System.out.println("Order Number: " + ordNum);
+	    t = rs.getTimestamp("timestamp");
+	    System.out.println("Date/Time: " + t.toString());
+	    while (rs.next()) {
+		
+		String stockNum = rs.getString("stock_number");
+		int quantity = rs.getInt("quantity");
+		
+		System.out.println("Item Number: " + stockNum + "     Quantity: " + quantity);
+	    }
+
+	} catch(Exception e) {
+	    System.out.println("Unable to find past order. Exiting");
+	    System.exit(1);
+	}
 	
     }
 
-    private void reRun(int orderNumber)
+    private void reRun()
     {
+
+	Random generator = new Random();
+
+	System.out.println("Please enter the order number");
+
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+	String ordNum = "";
+
+	try{
+	    ordNum = br.readLine();
+	} catch (IOException ioe) {
+	    System.out.println("Error reading order number. Exiting");
+	    System.exit(1);
+	}
+
+
+	String queryFind = "SELECT * FROM Orders o WHERE o.order_number = '" + ordNum + "'";
+	Statement st = null;
+	String getStatus = "SELECT c.customer_ID, c.status from Customer c, Orders 0 WHERE o.customer_ID = c.customer_ID AND o.order_number = ordNum";
+	try {
+	    st = custConn.getConnection().createStatement();
+	    ResultSet rs = st.executeQuery(queryFind);
+	    while (rs.next()) {
+		String stat = rs.getString("status");
+	    }
+	} catch (Exception e) {
+	    System.out.println("Cant get customer status. Exiting");
+	    System.exit(1);
+	}
 	
+	double discount = 0;
+
+	if (stat.equals("gold") = true) 
+	    discount = 0.9;
+	else if (stat.equals("silver") = true)
+	    discount = 0.95;
+	else 
+	    discount = 0;
+	
+	int m = getCurrentMonth();
+	Timestamp t = getCurrentTime();
+	try {
+	    //st = custConn.getConnection().createStatement();
+	    rs = st.executeQuery(queryFind);
+	    while (rs.next()) {
+		
+		String stockNum = rs.getString("stock_number");
+		int quantity = rs.getInt("quantity");
+		//double cost = rs.getReal("final_cost");
+		String cid = rs.getString("customer_ID");
+		String orderNum = Integer.toString(generator.nextInt(999999));
+
+		
+		String cost = "SELECT p.price, o.quantity FROM Product p, Orders o WHERE p.stock_number = '" + stockNum + "' AND o.order_number = '" + ordNum + "'";
+
+		try {
+		    ResultSet rst = st.executeQuery(cost);
+		    double total = rst.getReal("price") * rst.getInt("quantity");
+		} catch (Exception e) {
+		    System.out.println("Cant calculate price. Exiting");
+		    System.exit(1);
+		}
+		
+		// double finalCost = total * discount;
+
+		// if (finalCost < 100) 
+		//     finalCost = finalCost + (0.1 * finalCost);
+		    
+		
+		String newOrder = "INSERT into Orders(order_number, month, timestamp, customer_ID, stock_number, customer_Discount, final_cost, quantity) VALUES ('" + orderNum + "', '" + m + "', '" + t + "', '" + cid + "', '" + stockNum + "', '" + discount + "', '" + total + "', '" + quantity + "'";
+
+		try {
+		    rst = st.executeQuery(newOrder);
+		} catch (Exception e) {
+		    System.out.println("unable to insert new order");
+		    System.exit(1);
+		}
+
+		
+		
+	    }
+
+	} catch(Exception e) {
+	    System.out.println("Unable to find past order. Exiting");
+	    System.exit(1);
+	}
+
+
+
+	
+
+
+
+
+
     }
 
 	
