@@ -1,6 +1,8 @@
 import java.io.*;
 import java.sql.*;
 import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class CustomerInterface
 {
@@ -53,6 +55,7 @@ public class CustomerInterface
 			displayItem();
 			break;
 		    case "check out":
+			checkOut();
 			break;
 		    case "find":
 			break;
@@ -179,7 +182,7 @@ public class CustomerInterface
 			String priceOfItem = "select p.Price from Product p where p.stock_number= '" + stock_num + "'";
 			rs = st.executeQuery(priceOfItem);
 
-			rs.getInt("Price")
+			rs.getInt("Price");
 
 			//query price of item
 			String insertData = "INSERT INTO ShoppingCart(customer_ID, stock_number, quantity)" + 
@@ -283,29 +286,81 @@ public class CustomerInterface
     
     private void checkOut()
     {
-	int orderNum;
+	String orderNum = "";
 	boolean isUnique = false;
 	Statement st = null;
 	ResultSet rs = null;
+	ResultSet rs1 = null;
+	Random generator = new Random();
 
 	while (isUnique == false)
 	{
-		orderNum = Integer.toString(generator.nextInt(999999));
-		String checkUnique = "select * from Orders where order_number = '" + orderNum + "'";
-		rs = st.executeQuery(checkUnique);
+		int randInt = generator.nextInt(999999);
+		orderNum = Integer.toString(randInt);
+		String checkUnique = "select o.order_number from Orders o where o.order_number = '" + orderNum + "'";
+		
+		try {		
+			st = custConn.getConnection().createStatement();
+			rs = st.executeQuery(checkUnique);
+		
+			if(rs.next() == false)
+				isUnique = true;
 
-		if(rs.next() == false)
-			isUnique = true;
+		} catch (Exception e) {
+			System.out.println("Error generating number");
+		}
 	}
 	
-	
-	//for every stock_number in shopping cart
-	//order number is newly calculated order number
-	//month is current month
-	//sale date is current sale date
-	//customer_ID is current customer ID
-	//final cost is the total cost of all items
-	//quantity is the total number of that product sold
+	try {
+		String getStockNums = "select sc.stock_number from Shopping Cart sc where sc.customer_ID = '" + customerID + "'";
+		rs = st.executeQuery(getStockNums);
+
+		while (rs.next())
+		{
+			int month = getCurrentMonth();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			java.util.Date date = new java.util.Date();
+			String finalDate = dateFormat.format(date);
+			String stockNum = rs.getString("stock_number");
+			int finalQty = rs.getInt("finalQty");
+
+			String priceOfItem = "select p.Price from Product p where p.stock_number= '" + stockNum + "'";
+			rs1 = st.executeQuery(priceOfItem);
+			double price = rs1.getInt("Price");
+			double finalPrice = finalQty*price;
+
+			//find out discount percentage
+			String findDiscount = "select c.status from Customer c where c.customer_ID = '" + customerID + "'";
+			double discountInt = 0;
+			rs1.next();
+			String discount = rs1.getString("status");
+
+			if (discount.equals("New"))
+				discountInt = .10;
+			else if (discount.equals("Green"))
+				discountInt = .10;
+			else if (discount.equals("Silver"))
+				discountInt = .05;
+			else if (discount.equals("Gold"))
+				discountInt = .10;
+			
+		
+			String newOrder = "insert into Orders(order_number, month, sale_date, customer_ID, stock_number, customer_Discount, final_cost, quantity) values('" + 
+								orderNum + "'," + month + ",'" + finalDate + "','" + customerID + "','" + stockNum + "'," + discountInt + "," + finalPrice + "," + finalQty + ")";
+			rs1 = st.executeQuery(newOrder);
+		}
+			//for every stock_number in shopping cart
+			//order number is newly calculated order number
+			//month is current month
+			//sale date is current sale date
+			//customer_ID is current customer ID
+			//final cost is the total cost of all items
+			//quantity is the total number of that product sold
+			//Delete rows in shopping cart for that user
+	} catch (Exception e) {
+		System.out.println("Error checking out");
+	}
+
     }
     
     private void find(int orderNumber)
@@ -321,28 +376,3 @@ public class CustomerInterface
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
