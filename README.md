@@ -11,4 +11,4 @@ COMMANDS BECAUSE I AM LAZY:
 
 sqlplus64 /nolog
 
-connect cs174a/1234567@uml.cs.ucsb.edu:1521/xexdb 
+connect bnewman/4672200@uml.cs.ucsb.edu:1521/xexdb 
