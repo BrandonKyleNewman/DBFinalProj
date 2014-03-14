@@ -116,17 +116,17 @@ public class DataInitialization {
 
 			//Shipping Notice Table
 			createTable = 		"CREATE TABLE ShippingNotice( shipID CHAR(20)," +
-									     "shipping_company_name CHAR(20)," + 
+									     "manufacturer CHAR(20)," + 
 									     "PRIMARY KEY (shipID))";
 			rs = st.executeQuery(createTable);
 			System.out.println("ShippingNotice table created");
 
 			//Created Shipped Items Table
-			createTable = 		"CREATE TABLE ShippedItems(manufacturer CHAR(20)," + 
-									   "model_number CHAR(20)," + 
+			createTable = 		"CREATE TABLE ShippedItems(model_number CHAR(20)," +
+			                                                   "manufacturer CHAR(20)," + 
 									   "quantity INTEGER," +  
 									   "shipID CHAR(20)," +  
-									   "PRIMARY KEY (manufacturer, model_number)," +  
+									   "PRIMARY KEY (model_number, shipID)," +  
 									   "FOREIGN KEY (shipID) REFERENCES ShippingNotice)";
 			rs = st.executeQuery(createTable);
 			System.out.println("ShippedItems table created");
