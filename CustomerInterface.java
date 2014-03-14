@@ -47,7 +47,7 @@ public class CustomerInterface
 			addItem();
 			break;
 		    case "delete":
-			
+			deleteItem();
 			break;
 		    case "display":
 			displayItem();
@@ -172,9 +172,14 @@ public class CustomerInterface
 	
 		if (rs.next() != false)
 		{
-			System.out.println("How much of this item do you want to purcase?");
+			System.out.println("How much of this item do you want to purchase?");
 			Scanner in = new Scanner(System.in);
 			int num = in.nextInt();
+
+			String priceOfItem = "select p.Price from Product p where p.stock_number= '" + stock_num + "'";
+			rs = st.executeQuery(priceOfItem);
+
+			rs.getInt("Price")
 
 			//query price of item
 			String insertData = "INSERT INTO ShoppingCart(customer_ID, stock_number, quantity)" + 
@@ -195,26 +200,73 @@ public class CustomerInterface
 	
     }
     
-    private void deleteItem(String stock_num)
+    private void deleteItem()
     {
-	
+	String stock_num = null;
+	System.out.println("Type the stock number of the item you would like to delete from the cart.");
+	try {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		stock_num = br.readLine();
+	} catch (Exception e) {
+		System.out.println("error reading input");
+	}
+
+	Statement st = null;
+	ResultSet rs = null;
+
+	try {
+		st = custConn.getConnection().createStatement();
+		String qry = "select sc.stock_number from ShoppingCart sc where sc.stock_number = '" + stock_num + "'";
+		rs = st.executeQuery(qry);
+
+		if (rs.next() != false)
+		{
+			System.out.println("How much of this item do you want to decrease?");
+			Scanner in = new Scanner(System.in);
+			int decreaseNum = in.nextInt();
+			
+			String checkQty = "select sc.quantity from ShoppingCart sc where sc.stock_number = '" + stock_num + "'";
+			rs = st.executeQuery(checkQty);
+			rs.next();
+			int actQty = rs.getInt("quantity");
+			
+			if (actQty < decreaseNum)
+			{
+				String deleteRow = "delete from ShoppingCart sc where sc.stock_number = '" + stock_num + "'";
+				rs = st.executeQuery(deleteRow);
+			}
+			else
+			{
+				int updateNum = actQty - decreaseNum;
+				String updateRow = "update ShoppingCart sc set sc.quantity = " + Integer.toString(updateNum) + " where sc.stock_number = '" + stock_num + "'";
+				rs = st.executeQuery(updateRow);
+			}
+			
+		}
+		else
+			System.out.println("Please enter a valid stock number");
+	}
+	catch (Exception e) {
+		System.out.println("Error");
+	}
+
+		
     }
     
     private void displayItem()
     {
 	Statement st = null;
 	ResultSet rs = null;
-	System.out.println("dklsfj");
 	try {
 		st = custConn.getConnection().createStatement();
-		
-		String qry = "select * from ShoppingCart sc";
+		System.out.println(customerID);
+		String qry = "select * from ShoppingCart sc where sc.customer_ID = '" + customerID + "'";
 		rs = st.executeQuery(qry);
 
 		while(rs.next())
 		{
-			System.out.println("stock number: " + rs.getString("stock_number"));
-			System.out.println("qty: " + rs.getInt("quantity"));
+			System.out.println("stock number:   " + rs.getString("stock_number"));
+			System.out.println("         qty:   " + rs.getInt("quantity"));
 		}
 
 	while (rs.next())
@@ -231,8 +283,29 @@ public class CustomerInterface
     
     private void checkOut()
     {
-	//drop table?
-	//Transfers information from cart to order, prescribes ID
+	int orderNum;
+	boolean isUnique = false;
+	Statement st = null;
+	ResultSet rs = null;
+
+	while (isUnique == false)
+	{
+		orderNum = Integer.toString(generator.nextInt(999999));
+		String checkUnique = "select * from Orders where order_number = '" + orderNum + "'";
+		rs = st.executeQuery(checkUnique);
+
+		if(rs.next() == false)
+			isUnique = true;
+	}
+	
+	
+	//for every stock_number in shopping cart
+	//order number is newly calculated order number
+	//month is current month
+	//sale date is current sale date
+	//customer_ID is current customer ID
+	//final cost is the total cost of all items
+	//quantity is the total number of that product sold
     }
     
     private void find(int orderNumber)

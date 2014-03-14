@@ -44,7 +44,7 @@ public class DataInitialization {
 			System.out.println("Product table created");
 			
 						//Accessory Table
-			createTable = 		"CREATE TABLE Accessory(parent_stock_number CHAR(7)," +
+			createTable = 		"CREATE TABLE Accessory( parent_stock_number CHAR(7)," +
 									"child_stock_number CHAR(7)," + 
 									"PRIMARY KEY(parent_stock_number, child_stock_number)," +
 									"FOREIGN KEY(parent_stock_number) REFERENCES Product(stock_number)," +
@@ -74,27 +74,27 @@ public class DataInitialization {
 			System.out.println("Customer table created");
 
 			//Shopping Cart Table
-			createTable = 		"CREATE TABLE ShoppingCart(customer_ID CHAR(20)," +
-									   "stock_number CHAR(20)," +
-									   "quantity INTEGER," +
-									   "total_price REAL," +
-									   "PRIMARY KEY(customer_ID, stock_number)," +
+			createTable = 		"CREATE TABLE ShoppingCart( customer_ID CHAR(20)," 			   +
+									   "stock_number CHAR(7)," 			   +
+									   "quantity INTEGER," 				   +
+									   "total_price REAL," 				   +
+									   "PRIMARY KEY(customer_ID, stock_number)," 	   +
 									   "FOREIGN KEY(stock_number) REFERENCES Product," +
 									   "FOREIGN KEY(customer_ID) REFERENCES Customer)";
 			rs = st.executeQuery(createTable);
 			System.out.println("ShoppingCart table created");
 
 			//Orders Table
-			createTable = 		"CREATE TABLE Orders(order_number CHAR(20),"	 +  
-			                                                "month INTEGER," +
-								    	"sale_date DATE," 	+  
-									"customer_ID CHAR(20),"	+ 
-									"stock_number CHAR(20)," +
-									"customer_Discount REAL," +  
- 									"final_cost REAL," +
-			                                                "quantity INTEGER," +
+			createTable = 		"CREATE TABLE Orders(order_number CHAR(20),"		+  
+			                                                "month INTEGER," 		+
+								    	"sale_date DATE," 		+  
+									"customer_ID CHAR(20),"		+ 
+									"stock_number CHAR(20)," 	+
+									"customer_Discount REAL," 	+  
+ 									"final_cost REAL," 		+
+			                                                "quantity INTEGER," 		+
 									"PRIMARY KEY(order_number, stock_number, customer_ID)," +
-									"FOREIGN KEY(customer_ID) REFERENCES Customer," +
+									"FOREIGN KEY(customer_ID) REFERENCES Customer," 	+
 									"FOREIGN KEY(stock_number) REFERENCES Product)";
 			rs = st.executeQuery(createTable);
 			System.out.println("Orders table created");
@@ -102,14 +102,14 @@ public class DataInitialization {
 			System.out.println("Initializing eDEPOT tables");
 			
 			//Product Depot Table
-			createTable = 		"CREATE TABLE ProductDepot(stock_number CHAR(7)," +
-									  "manufacturer CHAR(20)," +
-									  "model_number CHAR(20)," +
-									  "quantity INTEGER," + 
-						 			  "min_stock_level INTEGER," + 
-						 			  "max_stock_level INTEGER," + 
-									  "location CHAR(20)," +  
-									  "replenishment INTEGER," + 
+			createTable = 		"CREATE TABLE ProductDepot(stock_number CHAR(7)," 	+
+									  "manufacturer CHAR(20),"	+
+									  "model_number CHAR(20)," 	+
+									  "quantity INTEGER," 		+ 
+						 			  "min_stock_level INTEGER," 	+ 
+						 			  "max_stock_level INTEGER," 	+ 
+									  "location CHAR(20)," 		+  
+									  "replenishment INTEGER," 	+ 
 						 			  "PRIMARY KEY(stock_number))";
 			rs = st.executeQuery(createTable);
 			System.out.println("ProductDepot table created");
@@ -122,7 +122,7 @@ public class DataInitialization {
 			System.out.println("ShippingNotice table created");
 
 			//Created Shipped Items Table
-			createTable = 		"CREATE TABLE ShippedItems(model_number CHAR(20)," +
+			createTable = 		"CREATE TABLE ShippedItems( model_number CHAR(20)," +
 			                                                   "manufacturer CHAR(20)," + 
 									   "quantity INTEGER," +  
 									   "shipID CHAR(20)," +  
