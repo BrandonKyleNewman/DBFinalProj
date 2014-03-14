@@ -5,7 +5,7 @@ public class Edepot
 {
 	public static void main(String[] args) throws SQLException
 	{
-	    String s = "";
+	    String s = "string";
 	    ConnectionHandler C = new ConnectionHandler();
 	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	    

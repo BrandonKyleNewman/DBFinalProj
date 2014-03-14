@@ -109,6 +109,7 @@ public class ExternalWorldInterface
 	    	String updateRep = "UPDATE ProductDepot p SET p.replenishment = '" + q + "' WHERE p.manufacturer = '" + manu + "' AND p.model_number = '" + modNum + "'";
 	    	try {
 	    	    int rst = s.executeUpdate(updateRep);
+		    System.out.println("shipping notice filled replenishment");
 	    	} catch (Exception e) {
 	    	    System.out.println("Unable to update replenishment");
 	    	    System.exit(1);
@@ -150,40 +151,40 @@ public class ExternalWorldInterface
 		    try {
 			//Statement st = custConn.getConnection().createStatement();
 			int rst = stm.executeUpdate(update);
-			//	System.out.println("please work");
+		      	System.out.println("please work");
 		    } catch (Exception e) {
 			System.out.println("Error updating product quantity. Exiting");
 			System.exit(1);
 		    }
-		    // try {
-		    // 	ResultSet r = stm.executeQuery(check);
-		    // 	System.out.println("whats going on");
-		    // 	//while(r.next()) {
-		    // 	    System.out.println("yo");
-		    // 	    System.out.println("quantity: " + r.getInt("quantity"));
-		    // 	    int qq = r.getInt(1);
-		    // 		System.out.println("good");
+		    try {
+		    	ResultSet r = stm.executeQuery(check);
+		    	System.out.println("whats going on");
+		    	//while(r.next()) {
+		    	    System.out.println("yo");
+		    	    System.out.println("quantity: " + r.getInt("quantity"));
+		    	    int qq = r.getInt(1);
+		    		System.out.println("good");
 
-		    // 	    int max = r.getInt("max_stock_level");
-		    // 	    System.out.println("ok");
-		    // 	    if (qq > max) {
-		    // 		System.out.println("good");
-		    // 		try {
-		    // 		    int rr = stm.executeUpdate(keep);
-		    // 		    System.out.println("better");
-		    // 		} catch (Exception e) {
-		    // 		    System.out.println("Error setting stock level to max level. Exiting");
-		    // 		    System.exit(1);
-		    // 		}
-		    // 		System.out.println("too far");
-		    // 	    }
-		    // 	    else
-		    // 		continue;
-		    // 	    //	}
-		    // } catch (Exception e) {
-		    // 	System.out.println("Error checking max stock level. Exiting");
-		    // 	System.exit(1);
-		    // }
+		    	    int max = r.getInt("max_stock_level");
+		    	    System.out.println("ok");
+		    	    if (qq > max) {
+		    		System.out.println("good");
+		    		try {
+		    		    int rr = stm.executeUpdate(keep);
+		    		    System.out.println("better");
+		    		} catch (Exception e) {
+		    		    System.out.println("Error setting stock level to max level. Exiting");
+		    		    System.exit(1);
+		    		}
+		    		System.out.println("too far");
+		    	    }
+		    	    else
+		    		continue;
+		    	    //	}
+		    } catch (Exception e) {
+		    	System.out.println("Error checking max stock level. Exiting");
+		    	System.exit(1);
+		    }
 			
 		}
 	} catch (Exception e) 

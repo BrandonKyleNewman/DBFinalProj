@@ -356,7 +356,19 @@ public class ManagerInterface
 	
 	//query the database, deleting all but the most recent 3 sales transactions for each customer
 	
+	String deleteOrders = "DELETE FROM Orders o1 WHERE (SELECT COUNT(o2.order_number) FROM Orders o2 WHERE o2.timestamp > o1.timestamp AND o2.customer_ID = o1.customer_ID) > 2";
+
+	Statement stm = null;
 	
+	try {
+	    stm = custConn.getConnection().createStatement();
+	    ResultSet rs = stm.executeQuery(deleteOrders);
+	} catch (Exception e) {
+	    System.out.println("Error deleting unneeded transactions");
+	    System.exit(1);
+	}
+
+	System.out.println("Successfully deleted unneeded transactions");
 
 
     }
@@ -400,6 +412,7 @@ public class ManagerInterface
 			changePrice();
 			break;
 		    case "delete unneeded transactions":
+			deleteUneededTrans();
 			break;
 		    case "help":
 			break;
