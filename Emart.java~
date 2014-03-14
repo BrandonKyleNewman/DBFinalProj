@@ -20,21 +20,27 @@ public class Emart
 		    System.out.println("IO error trying to read account type!");
 		    System.exit(1);
 		}
+
 		System.out.println("Please enter your account id.");
+
 		try {
 		    userID = br.readLine();
 		} catch (IOException ioe) {
 		    System.out.println("IO error trying to read your ID!");
 		    System.exit(1);
 		}
+
 		System.out.println("Please enter your password.");
+
 		try {
 		    userPwd = br.readLine();
 		} catch (IOException ioe) {
 		    System.out.println("IO error trying to read your password!");
 		    System.exit(1);
 		}
+
 		boolean loggedIn = false;
+
 		while (loggedIn == false)
 		{		
 		   
