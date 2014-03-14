@@ -74,19 +74,12 @@ public class DataInitialization {
 			System.out.println("Customer table created");
 
 			//Shopping Cart Table
-<<<<<<< HEAD
+
 			createTable = 		"CREATE TABLE ShoppingCart( customer_ID CHAR(20)," 			   +
 									   "stock_number CHAR(7)," 			   +
 									   "quantity INTEGER," 				   +
 									   "total_price REAL," 				   +
 									   "PRIMARY KEY(customer_ID, stock_number)," 	   +
-=======
-			createTable = 		"CREATE TABLE ShoppingCart(customer_ID CHAR(20)," +
-									   "stock_number CHAR(7)," +
-									   "quantity INTEGER," +
-									   "total_price REAL," +
-									   "PRIMARY KEY(customer_ID, stock_number)," +
->>>>>>> 1b746b72163a7c699a61461607689a375fe0c269
 									   "FOREIGN KEY(stock_number) REFERENCES Product," +
 									   "FOREIGN KEY(customer_ID) REFERENCES Customer)";
 			rs = st.executeQuery(createTable);

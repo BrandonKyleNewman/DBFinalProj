@@ -412,7 +412,7 @@ public class ManagerInterface
 			changePrice();
 			break;
 		    case "delete unneeded transactions":
-			deleteUneededTrans();
+			deleteUnneededTrans();
 			break;
 		    case "help":
 			break;
