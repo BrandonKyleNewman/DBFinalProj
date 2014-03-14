@@ -75,7 +75,7 @@ public class DataInitialization {
 
 			//Shopping Cart Table
 			createTable = 		"CREATE TABLE ShoppingCart(customer_ID CHAR(20)," +
-									   "stock_number CHAR(20)," +
+									   "stock_number CHAR(7)," +
 									   "quantity INTEGER," +
 									   "total_price REAL," +
 									   "PRIMARY KEY(customer_ID, stock_number)," +
